@@ -4,10 +4,6 @@ from sklearn.preprocessing import normalize
 
 
 def purity(clusters, true_labels):
-    """
-    Equation 5.
-    For each cluster find the majority label; count those docs as correct.
-    """
     total = sum(len(c) for c in clusters)
     if total == 0:
         return 0.0
@@ -21,11 +17,6 @@ def purity(clusters, true_labels):
 
 
 def entropy(clusters, true_labels):
-    """
-    Equations 6 + 7.
-    Weighted average intra-cluster entropy.
-    Measures label mixing within clusters.
-    """
     total = sum(len(c) for c in clusters)
     if total == 0:
         return 0.0
@@ -45,11 +36,6 @@ def entropy(clusters, true_labels):
 
 
 def overall_similarity(clusters, X):
-    """
-    Equation 8.
-    Weighted average of squared centroid lengths.
-    Equivalent to average intra-cluster cosine similarity.
-    """
     X_norm = normalize(X, norm='l2')
     total  = sum(len(c) for c in clusters)
     if total == 0:
