@@ -12,7 +12,7 @@ The paper tests whether adding **WordNet synonyms and hypernyms** (with PoS tagg
 |--|---------------------------|------------------------------------------|
 | Documents | ~9,000–22,000 | 18,846 |
 | Categories | ~50–90 (single-label) | **20 fixed categories** |
-| Balance | Unbalanced (capped at 20/50/100) | **Perfectly balanced** (1,000 per category) |
+| Balance | Unbalanced (capped at 20/50/100) | **Perfectly balanced** |
 | Domain | Financial news | Usenet posts (tech, sports, politics, etc.) |
 
 
