@@ -26,7 +26,7 @@ The paper tests whether adding **WordNet synonyms and hypernyms** (with PoS tagg
    - WordNet enrichment (synset IDs + hypernyms)
    - Pruning (remove terms with df < threshold)
    - TF‑IDF weighting (paper's exact `log2` formula)
-3. **Cluster** with bisecting k‑means (`k = 16, 32, 64`)
+3. **Cluster** with bisecting k‑means 
 4. **Evaluate** using purity, entropy, overall similarity
 5. **Average** 3 runs per configuration (for stability)
 
@@ -42,7 +42,7 @@ The paper tests whether adding **WordNet synonyms and hypernyms** (with PoS tagg
 
 ## Cluster Sizes (k)
 
-We tested **k = 15, 20, 24** to better match the 20 Newsgroups category count - — to test under, near, and over the true number of categories (20).
+We tested **k = 15, 20, 25** to better match the 20 Newsgroups category count - — to test under, near, and over the true number of categories (20).
 > NOTE: In the paper: **16, 32, 64** clusters 
 
 
