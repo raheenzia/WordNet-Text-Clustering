@@ -39,8 +39,8 @@ def run_experiments(docs, labels):
                 np.random.seed(RANDOM_SEED + run)
                 clusters = bisecting_kmeans(X, k)
 
-                run_purities.append(purity(clusters,             labels))
-                run_entropies.append(entropy(clusters,           labels))
+                run_purities.append(purity(clusters, labels))
+                run_entropies.append(entropy(clusters, labels))
                 run_similarities.append(overall_similarity(clusters, X))
 
             p = float(np.mean(run_purities))
@@ -50,10 +50,10 @@ def run_experiments(docs, labels):
             print(f"  k={k:2d}: purity={p:.3f}  entropy={e:.3f}  similarity={s:.3f}")
 
             rows.append({
-                'config':     config_name,
-                'k':          k,
-                'purity':     round(p, 4),
-                'entropy':    round(e, 4),
+                'config': config_name,
+                'k': k,
+                'purity': round(p, 4),
+                'entropy': round(e, 4),
                 'similarity': round(s, 4),
             })
 
@@ -79,8 +79,8 @@ def save_results(df, out_dir):
 def plot_results(df, out_dir):
     config_order = list(EXPERIMENT_CONFIGS.keys())
     colors = {
-        'purity':     ('steelblue',  'Purity'),
-        'entropy':    ('firebrick',  'Entropy'),
+        'purity': ('steelblue',  'Purity'),
+        'entropy': ('firebrick',  'Entropy'),
         'similarity': ('seagreen',   'Similarity'),
     }
 
@@ -129,10 +129,10 @@ if __name__ == '__main__':
     out_dir = "results"
 
     docs, labels = load_data()
-    df           = run_experiments(docs, labels)
-    pivot        = save_results(df, out_dir)
+    df = run_experiments(docs, labels)
+    pivot = save_results(df, out_dir)
     plot_results(df, out_dir)
 
-    print("\n── Summary ──────────────────────────────────────────")
+    print("\n===== Summary =================================")
     print(pivot.to_string())
     print("\nDone. Results in results/")

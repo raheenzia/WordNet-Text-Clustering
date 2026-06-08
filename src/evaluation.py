@@ -24,9 +24,9 @@ def entropy(clusters, true_labels):
     for c in clusters:
         if not c:
             continue
-        size   = len(c)
+        size = len(c)
         counts = Counter(true_labels[i] for i in c)
-        ice    = 0.0
+        ice= 0.0
         for count in counts.values():
             p = count / size
             if p > 0:

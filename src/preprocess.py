@@ -1,15 +1,17 @@
 import nltk
+import numpy as np
 from collections import Counter
 from nltk.corpus import wordnet as wn
 from nltk.stem import WordNetLemmatizer
-from sklearn.feature_extraction.text import TfidfVectorizer
+# from sklearn.feature_extraction.text import TfidfVectorizer
+from scipy.sparse import lil_matrix
 
 for _path, _pkg in [
-    ('tokenizers/punkt',                          'punkt'),
-    ('tokenizers/punkt_tab',                      'punkt_tab'),
-    ('taggers/averaged_perceptron_tagger',         'averaged_perceptron_tagger'),
-    ('taggers/averaged_perceptron_tagger_eng',     'averaged_perceptron_tagger_eng'),
-    ('corpora/wordnet',                            'wordnet'),
+    ('tokenizers/punkt','punkt'),
+    ('tokenizers/punkt_tab','punkt_tab'),
+    ('taggers/averaged_perceptron_tagger','averaged_perceptron_tagger'),
+    ('taggers/averaged_perceptron_tagger_eng','averaged_perceptron_tagger_eng'),
+    ('corpora/wordnet', 'wordnet'),
 ]:
     try:
         nltk.data.find(_path)
@@ -33,8 +35,8 @@ def _remove_stopwords(tagged):
     kept = []
     for word, tag in tagged:
         wn_pos = _to_wn_pos(tag)
-        if wn_pos is None:     continue
-        if len(word) < 3:      continue
+        if wn_pos is None: continue
+        if len(word) < 3: continue
         if not word.isalpha(): continue
         kept.append((word, wn_pos))
     return kept
@@ -55,8 +57,8 @@ def _get_hypernyms(synset, depth):
 
 
 def _enrich(stemmed, config):
-    use_pos        = config['use_pos']
-    use_synonyms   = config['use_synonyms']
+    use_pos= config['use_pos']
+    use_synonyms = config['use_synonyms']
     hypernym_depth = config['hypernym_depth']
 
     terms = []
@@ -76,36 +78,64 @@ def _prune(tokenized_docs, threshold):
     for doc in tokenized_docs:
         doc_freq.update(set(doc))
 
-    valid  = {t for t, f in doc_freq.items() if f >= threshold}
+    valid = {t for t, f in doc_freq.items() if f >= threshold}
     pruned = [[t for t in doc if t in valid] for doc in tokenized_docs]
 
     print(f"    pruning: {len(doc_freq)} → {len(valid)} terms "
           f"(threshold={threshold})")
     return pruned
 
+# def _tfidf(tokenized_docs):
+#     text_docs  = [" ".join(doc) if doc else "empty" for doc in tokenized_docs]
+#     vectorizer = TfidfVectorizer(
+#         analyzer='word',
+#         token_pattern=r'\S+',
+#         min_df=1,
+#         sublinear_tf=True,
+#     )
+#     X = vectorizer.fit_transform(text_docs)
+#     print(f"    tfidf matrix: {X.shape[0]} docs × {X.shape[1]} terms")
+#     return X
+
+
+ 
 def _tfidf(tokenized_docs):
-    text_docs  = [" ".join(doc) if doc else "empty" for doc in tokenized_docs]
-    vectorizer = TfidfVectorizer(
-        analyzer='word',
-        token_pattern=r'\S+',
-        min_df=1,
-        sublinear_tf=True,
-    )
-    X = vectorizer.fit_transform(text_docs)
-    print(f"    tfidf matrix: {X.shape[0]} docs × {X.shape[1]} terms")
+    n = len(tokenized_docs)
+ 
+    doc_freq = Counter()
+    for doc in tokenized_docs:
+        doc_freq.update(set(doc))
+ 
+    vocab   = {term: idx for idx, term in enumerate(sorted(doc_freq))}
+    n_terms = len(vocab)
+ 
+    idf = np.zeros(n_terms)
+    for term, idx in vocab.items():
+        idf[idx] = np.log2(n) - np.log2(doc_freq[term]) + 1
+ 
+    X = lil_matrix((n, n_terms), dtype=np.float64)
+    for doc_idx, doc in enumerate(tokenized_docs):
+        tf = Counter(doc)
+        for term, count in tf.items():
+            if term in vocab:
+                X[doc_idx, vocab[term]] = count * idf[vocab[term]]
+ 
+    X = X.tocsr()
+    print(f"    tfidf matrix: {X.shape[0]} docs x {X.shape[1]} terms")
     return X
+ 
 
 def build_document_vectors(docs, config, pruning_threshold):
     tokenized = []
     for i, doc in enumerate(docs):
-        tagged   = _pos_tag(doc)             # Step 1
+        tagged = _pos_tag(doc)   # Step 1
         filtered = _remove_stopwords(tagged) # Step 2
-        stemmed  = _lemmatize(filtered)      # Step 3
+        stemmed = _lemmatize(filtered)   # Step 3
         enriched = _enrich(stemmed, config)  # Step 4
         tokenized.append(enriched)
         if (i + 1) % 200 == 0:
             print(f"    {i+1}/{len(docs)} docs tokenized...")
 
     pruned = _prune(tokenized, pruning_threshold)  # Step 5
-    X      = _tfidf(pruned)                        # Step 6
+    X  = _tfidf(pruned)                        # Step 6
     return X

@@ -20,7 +20,7 @@ def bisecting_kmeans(X, k, n_trials=3):
         best_labels, best_sse = None, float('inf')
 
         for _ in range(n_trials):
-            km     = KMeans(n_clusters=2, n_init=1, max_iter=100)
+            km = KMeans(n_clusters=2, n_init=1, max_iter=100)
             labels = km.fit_predict(subset)
             if km.inertia_ < best_sse:
                 best_sse, best_labels = km.inertia_, labels
