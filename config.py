@@ -22,11 +22,11 @@ EXPERIMENT_CONFIGS = {
     'Hyper_All': {
         'use_pos': True,
         'use_synonyms': True,
-        'hypernym_depth': -1  # -1 means all hypernyms
+        'hypernym_depth': -1 
     }
 }
 
-CLUSTER_SIZES = [16, 32, 64]
+CLUSTER_SIZES = [15, 20 , 25]
 NUM_RUNS = 3  
 RANDOM_SEED = 42
 PRUNING_THRESHOLD = 200
