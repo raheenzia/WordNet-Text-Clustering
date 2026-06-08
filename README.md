@@ -2,7 +2,7 @@
 
 A Python implementation of **Sedding & Kazakov (2013)** paper: *"WordNet-based Text Document Clustering"* — replicated on the **20 Newsgroups** dataset.
 
-## Paper Summary (3 lines)
+## Paper Summary
 
 The paper tests whether adding **WordNet synonyms and hypernyms** (with PoS tagging) improves text clustering. The key finding: **it does NOT help** — background knowledge adds too much noise (wrong word senses), making clusters worse than simple bag-of-words. The best results came from **Baseline** (no WordNet, no PoS).
 
@@ -30,7 +30,7 @@ The paper tests whether adding **WordNet synonyms and hypernyms** (with PoS tagg
 4. **Evaluate** using purity, entropy, overall similarity
 5. **Average** 3 runs per configuration (for stability)
 
-## Configurations (from Paper Table 2)
+## Configurations 
 
 | Config | PoS Tags | Synonyms | Hypernyms |
 |--------|----------|----------|-----------|
