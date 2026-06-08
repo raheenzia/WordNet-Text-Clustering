@@ -46,14 +46,4 @@ We tested **k = 15, 20, 24** to better match the 20 Newsgroups category count - 
 > NOTE: In the paper: **16, 32, 64** clusters 
 
 
-## Results Summary
-
-| Config | Purity (k=32) | Entropy (k=32) | Finding |
-|--------|--------------|----------------|---------|
-| **Baseline** | **0.266** | **3.20** | Best |
-| PoS_Only | 0.256 | 3.26 | Slightly worse |
-| Syns | 0.130 | 4.03 | Much worse |
-| Hyper_5 | 0.140 | 3.93 | Worse |
-| Hyper_All | 0.136 | 3.95 | Worst |
-
 **Replicates paper's main conclusion:** WordNet enrichment **degrades** clustering quality due to polysemy noise.
