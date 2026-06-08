@@ -15,7 +15,6 @@ The paper tests whether adding **WordNet synonyms and hypernyms** (with PoS tagg
 | Balance | Unbalanced (capped at 20/50/100) | **Perfectly balanced** (1,000 per category) |
 | Domain | Financial news | Usenet posts (tech, sports, politics, etc.) |
 
-> **Why 20 Newsgroups?** Freely available, well-studied, perfectly balanced, and more challenging (natural language, quotes, informal text).
 
 ## Experiment Steps
 
@@ -43,8 +42,8 @@ The paper tests whether adding **WordNet synonyms and hypernyms** (with PoS tagg
 
 ## Cluster Sizes (k)
 
-In the paper: **16, 32, 64** clusters — to test under, near, and over the true number of categories (20).
-> **Note:** We tested **k = 15, 20, 24** to better match the 20 Newsgroups category count - — to test under, near, and over the true number of categories (20).
+We tested **k = 15, 20, 24** to better match the 20 Newsgroups category count - — to test under, near, and over the true number of categories (20).
+> NOTE: In the paper: **16, 32, 64** clusters 
 
 
 ## Results Summary
