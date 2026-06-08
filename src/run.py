@@ -8,10 +8,10 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 from sklearn.datasets import fetch_20newsgroups
 
-from config          import EXPERIMENT_CONFIGS, CLUSTER_SIZES, NUM_RUNS, RANDOM_SEED, PRUNING_THRESHOLD
-from src.preprocess  import build_document_vectors
-from src.clustering  import bisecting_kmeans
-from src.evaluation  import purity, entropy, overall_similarity
+from config import EXPERIMENT_CONFIGS, CLUSTER_SIZES, NUM_RUNS, RANDOM_SEED, PRUNING_THRESHOLD
+from src.preprocess import build_document_vectors
+from src.clustering import bisecting_kmeans
+from src.evaluation import purity, entropy, overall_similarity
 
 def load_data():
     print("Loading 20 Newsgroups...")
@@ -79,9 +79,9 @@ def save_results(df, out_dir):
 def plot_results(df, out_dir):
     config_order = list(EXPERIMENT_CONFIGS.keys())
     colors = {
-        'purity': ('steelblue',  'Purity'),
-        'entropy': ('firebrick',  'Entropy'),
-        'similarity': ('seagreen',   'Similarity'),
+        'purity': ('steelblue','Purity'),
+        'entropy': ('firebrick', 'Entropy'),
+        'similarity': ('seagreen','Similarity'),
     }
 
     x_pos, x_labels = [], []
